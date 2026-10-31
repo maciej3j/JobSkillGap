@@ -1,0 +1,38 @@
+services:
+  web:
+    build: .
+    command: uv run uvicorn src.job_skill_gap.main:app --reload --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/jobskillgap
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - .:/app
+      - /app/.venv
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jobskillgap
+
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./db/create.sql:/docker-entrypoint-initdb.d/create.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 10
+
+  redis:
+    image: redis:8
+
+volumes:
+  pgdata:

@@ -1,0 +1,20 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env: { POSTGRESS_PASSWORD: postgres, POSTGRES_DB: jobskillgap }
+        ports:
+          - "5432:5432"
+        options: --health-cmd "pg_isready -U postgres" --health-interval 2s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/jobskillgap
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run pytest
