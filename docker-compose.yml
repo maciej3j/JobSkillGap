@@ -25,7 +25,7 @@ services:
 
     volumes:
       - pgdata:/var/lib/postgresql
-      - ./db/create.sql:/docker-entrypoint-initdb.d/create.sql
+      - ./src/job_skill_gap/db/create.sql:/docker-entrypoint-initdb.d/create.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 2s
