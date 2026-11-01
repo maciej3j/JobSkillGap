@@ -1,17 +1,12 @@
-from typing import Annotated
+from fastapi import FastAPI
 
-from fastapi import Depends, FastAPI
-from sqlalchemy import text
-from sqlalchemy.orm import Session
-
-from job_skill_gap.db import get_db
-
-app = FastAPI()
+from job_skill_gap.api.health_check import router as health_check_router
 
 
-@app.get("/health_check")
-async def health_check(db: Annotated[Session, Depends(get_db)]) -> dict[str, str]:
-    db.execute(text("SELECT 1"))
-    return {
-        "status": "OK",
-    }
+def create_application() -> FastAPI:
+    app = FastAPI()
+    app.include_router(health_check_router)
+    return app
+
+
+app = create_application()
