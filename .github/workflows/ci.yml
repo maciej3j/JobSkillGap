@@ -12,6 +12,7 @@ jobs:
         options: --health-cmd "pg_isready -U postgres" --health-interval 2s --health-retries 10
     env:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/jobskillgap
+      TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/jobskillgap
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.3
