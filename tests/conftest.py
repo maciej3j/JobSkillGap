@@ -1,10 +1,12 @@
-from fastapi.testclient import TestClient
-from job_skill_gap.main import create_application
-from sqlalchemy.orm import Session
-from job_skill_gap.db import Base, get_db
 import os
-from sqlalchemy import create_engine, Engine
+
 import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import Engine, create_engine
+from sqlalchemy.orm import Session
+
+from job_skill_gap.db import Base, get_db
+from job_skill_gap.main import create_application
 
 
 @pytest.fixture(scope="session")

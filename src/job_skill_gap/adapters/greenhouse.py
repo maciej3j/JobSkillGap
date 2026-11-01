@@ -1,5 +1,4 @@
 import html
-from asyncio import timeout
 from datetime import datetime
 
 import httpx
