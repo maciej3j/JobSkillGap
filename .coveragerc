@@ -1,0 +1,13 @@
+[tool.coverage.run]
+source = ["job_skill_gap"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    '^\s*\.\.\.\s*$',   # ciała metod Protocol
+]
+# fail_under = 80
