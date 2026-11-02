@@ -1,0 +1,59 @@
+Etap 1: Pierwszy adapter + surowe dane (Greenhouse)
+
+Tabele: sources, companies, import_runs, raw_offers (source, external_id, payload JSONB, content_hash, fetched_at, import_run_id), job_offers (ujednolicony model).
+Interfejs adaptera (np. Protocol z metodami fetch() i to_unified()).
+DoD: unikalny klucz (source, external_id); ponowne uruchomienie importu nie tworzy duplikatów (test); testy działają na zapisanych fixture’ach, bez sieci; import ≥ 10 firm daje ≥ 500 ofert; z każdej oferty da się dojść do surowego payloadu.
+
+Etap 2: Celery + Redis + odporność
+
+Task importu per źródło/firma, Celery Beat do cyklicznego uruchamiania.
+DoD: import uruchamia się z Beat; test, w którym jeden adapter rzuca wyjątek, a pozostałe się kończą; import_runs zapisuje status (success/failed/partial) i liczniki (nowe/zmienione/niezmienione).
+
+Etap 3: Lever i Ashby
+
+Te same wymagania co w etapie 1, ten sam interfejs.
+DoD: trzy źródła działają, każde z testami na fixture’ach; w bazie ≥ 5000 ofert łącznie (lub wyraźnie widać, że dojdziesz, dodając kolejne firmy). Sprawdź w dokumentacji każdego systemu aktualne publiczne endpointy (Greenhouse Job Board API, Lever Postings API, Ashby job board API) i ich limity.
+
+Etap 4: Zbiór referencyjny (zrób go wcześnie)
+
+Skrypt eksportujący losowe ~300 ofert do JSONL/CSV, ręczne oznaczanie: kompetencje (nazwy kanoniczne), profil, poziom.
+Podziel na dev i test (np. 100/200). Słownik i reguły stroisz na dev, a wynik raportujesz na teście, inaczej ocena będzie zawyżona.
+DoD: plik w data/reference/, walidacja schematu (Pydantic) w teście; losowanie z ziarnem, powtarzalne.
+
+Etap 5: Ekstrakcja i normalizacja kompetencji
+
+Słownik w YAML (nazwa kanoniczna + aliasy), dopasowanie z granicami słów/regex, reguły kontekstowe dla niejednoznacznych (Go, R, C, Rust, Spark...). spaCy PhraseMatcher możesz dodać, gdy będzie potrzebny.
+DoD: komenda uv run python -m app.eval skills wypisuje precision/recall/F1 na dev i test; zapisany wynik bazowy w notatce; każda wyekstrahowana kompetencja ma powiązanie z ofertą (i pozycję w tekście); po jednym teście na każdą regułę niejednoznaczną.
+
+Etap 6: Klasyfikacja profilu i poziomu
+
+Reguły: normalizacja tytułu, słowa kluczowe, kompetencje charakterystyczne; kategoria “unclassified” jest dozwolona.
+DoD: eval classification raportuje accuracy i F1 per klasa oraz macierz pomyłek; odsetek niesklasyfikowanych jest policzony i opisany.
+
+Etap 7: Deduplikacja
+
+W obrębie źródła: klucz zewnętrzny (już masz). Między źródłami: blocking po znormalizowanej firmie (żeby nie porównywać wszystkiego ze wszystkim), RapidFuzz dla tytułu/lokalizacji, TF-IDF + cosine dla treści, łączny wynik z wagami.
+Osobny zbiór oznaczonych par (kilkaset, z trudnymi przypadkami, nie tylko oczywistymi).
+DoD: próg wybrany na dev, wyniki P/R/F1 podane na teście; wykres lub tabela zależności precision/recall od progu.
+
+Etap 8: Statystyki i luka kompetencyjna
+
+Częstość kompetencji per profil, współwystępowanie, deklaracja kompetencji użytkownika, ranking luk.
+DoD: endpointy API (/profiles/{id}/skills, /gap) z testami na małym, ręcznie policzonym zbiorze, gdzie znasz poprawny wynik.
+
+Etap 9: Aplikacja webowa
+
+Strony: lista ofert z filtrami, statystyki profilu, formularz kompetencji użytkownika, widok luki.
+DoD: cały scenariusz (wybór profilu → zaznaczenie umiejętności → ranking luk) działa z poziomu przeglądarki na danych z bazy.
+
+Etap 10 (opcjonalnie): wynagrodzenia, wdrożenie, domknięcie pracy
+
+Normalizacja waluty i okresu, bez przeliczania między formami zatrudnienia, tak jak opisałeś.
+Wdrożenie online, README z diagramem architektury, szlifowanie tekstu.
+
+Etap 0: Fundament
+
+uv init, FastAPI, SQLAlchemy, Alembic, psycopg, Celery, redis, pytest, ruff.
+Docker Compose z usługami: api, worker, db, redis.
+DoD: docker compose up uruchamia całość; GET /health zwraca 200 i sprawdza połączenie z bazą; uv run pytest przechodzi; GitHub Actions uruchamia testy i ruff.
+
