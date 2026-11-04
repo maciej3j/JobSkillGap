@@ -1,26 +1,14 @@
 import logging
-from enum import StrEnum
 from pathlib import Path
 from typing import Annotated
 
 import typer
 
-from job_skill_gap.adapters.greenhouse import GreenhouseAdapter
 from job_skill_gap.db import SessionLocal
 from job_skill_gap.importer import run_import
+from job_skill_gap.sources import ADAPTERS, SourceName, read_tokens
 
 app = typer.Typer(name="JobSkillGap-cli", no_args_is_help=True)
-
-ADAPTERS = {"greenhouse": GreenhouseAdapter}
-
-
-class SourceName(StrEnum):
-    greenhouse = "greenhouse"
-
-
-def read_tokens(path: Path) -> list[str]:
-    lines = (line.strip() for line in path.read_text().splitlines())
-    return [line for line in lines if line and not line.startswith("#")]
 
 
 @app.command("import", no_args_is_help=True)
