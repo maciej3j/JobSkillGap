@@ -9,7 +9,7 @@ from job_skill_gap.db import get_db
 router = APIRouter()
 
 
-@router.get("/health_check")
+@router.get("/health")
 async def health_check(db: Annotated[Session, Depends(get_db)]) -> dict[str, str]:
     db.execute(text("SELECT 1"))
     return {
