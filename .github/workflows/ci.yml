@@ -12,9 +12,11 @@ jobs:
         options: --health-cmd "pg_isready -U postgres" --health-interval 2s --health-retries 10
     env:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/jobskillgap
-      TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/jobskillgap
+      TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/jobskillgap_test
+      POSTGRES_URL: postgresql://postgres:postgres@localhost:5432/jobskillgap
     steps:
       - uses: actions/checkout@v7
+      - run: psql "$POSTGRES_URL" -f src/job_skill_gap/db/create.sql
       - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync --frozen
       - run: uv run ruff check .
