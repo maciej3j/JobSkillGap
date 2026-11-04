@@ -35,5 +35,24 @@ services:
   redis:
     image: redis:8
 
+  worker:
+    build: .
+    command: uv run celery -A job_skill_gap.celery_app worker --loglevel=INFO
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/jobskillgap
+      REDIS_URL: redis://redis:6379/0
+    depends_on: { db: {condition: service_healthy}, redis: {condition: service_started}}
+    volumes: [".:/app", "/app/.venv"]
+
+  beat:
+    build: .
+    command: uv run celery -A job_skill_gap.celery_app beat --loglevel=INFO -s /tmp/celerybeat-schedule
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/jobskillgap
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      redis:
+        condition: service_started
+
 volumes:
   pgdata:
