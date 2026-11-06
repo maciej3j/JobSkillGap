@@ -52,14 +52,13 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [x] Interfejs adaptera (`Protocol`: `fetch`, `external_id`, `to_unified`), sieć tylko w `fetch`
 - [x] Fixture'y z prawdziwych odpowiedzi API w `tests/fixtures/greenhouse/`
 - [x] Testy adaptera działają na fixture'ach, bez sieci
-- [ ] `test_import_twice_creates_no_duplicates` przechodzi (drugi import: `new=0`, `unchanged=N`)
-- [ ] `test_changed_payload_is_updated` przechodzi
-- [ ] `test_every_offer_links_to_raw_payload` przechodzi
-- [ ] Import ≥ 10 firm daje ≥ 500 ofert w `raw_offers`
-- [ ] Ponowny import tych samych firm nie zmienia liczby wierszy
-- [ ] `import_runs` zapisuje status i liczniki (new/updated/unchanged)
-- [ ] Błąd jednej firmy nie przerywa importu pozostałych
-- [ ] Notatka `docs/thesis-notes/01-greenhouse.md`
+- [x] `test_import_twice_creates_no_duplicates` przechodzi (drugi import: `new=0`, `unchanged=N`)
+- [x] `test_changed_payload_is_updated` przechodzi
+- [x] `test_every_offer_links_to_raw_payload` przechodzi
+- [x] Import ≥ 10 firm daje ≥ 500 ofert w `raw_offers`
+- [x] Ponowny import tych samych firm nie zmienia liczby wierszy
+- [x] `import_runs` zapisuje status i liczniki (new/updated/unchanged)
+- [x] Błąd jednej firmy nie przerywa importu pozostałych
 
 ## Etap 2: Celery + Redis + odporność
 
@@ -70,7 +69,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] `import_runs.status` przyjmuje wartości `success` / `failed` / `partial`
 - [ ] Liczniki nowe/zmienione/niezmienione zapisywane przy każdym runie
 - [ ] Ponowne uruchomienie taska nie tworzy duplikatów
-- [ ] Notatka `docs/thesis-notes/02-celery.md`
 
 ## Etap 3: Lever i Ashby
 
@@ -79,7 +77,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Fixture'y i testy na fixture'ach dla każdego źródła
 - [ ] Idempotencja przetestowana dla każdego źródła
 - [ ] W bazie ≥ 5000 ofert łącznie (lub wyraźnie widać, że dojdzie do tej liczby po dodaniu firm)
-- [ ] Notatka `docs/thesis-notes/03-zrodla.md`
 
 ## Etap 4: Zbiór referencyjny
 
@@ -88,7 +85,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Podział na dev i test (np. 100/200), zapisany w plikach
 - [ ] Pliki w `data/reference/`
 - [ ] Walidacja schematu (Pydantic) w teście
-- [ ] Notatka `docs/thesis-notes/04-zbior-referencyjny.md`
 
 ## Etap 5: Ekstrakcja i normalizacja kompetencji
 
@@ -98,7 +94,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] `uv run python -m job_skill_gap.eval skills` wypisuje precision / recall / F1 na dev i na test
 - [ ] Wynik bazowy zapisany w notatce
 - [ ] Każda wyekstrahowana kompetencja ma powiązanie z ofertą i pozycją w tekście
-- [ ] Notatka `docs/thesis-notes/05-ekstrakcja.md`
 
 ## Etap 6: Klasyfikacja profilu i poziomu
 
@@ -108,7 +103,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Kategoria `unclassified` dozwolona
 - [ ] `eval classification` raportuje accuracy, F1 per klasa i macierz pomyłek (dev i test)
 - [ ] Odsetek niesklasyfikowanych policzony i opisany w notatce
-- [ ] Notatka `docs/thesis-notes/06-klasyfikacja.md`
 
 ## Etap 7: Deduplikacja
 
@@ -119,7 +113,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Próg wybrany na dev
 - [ ] P / R / F1 podane na teście
 - [ ] Tabela lub wykres zależności precision/recall od progu
-- [ ] Notatka `docs/thesis-notes/07-deduplikacja.md`
 
 ## Etap 8: Statystyki i luka kompetencyjna
 
@@ -128,7 +121,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Deklaracja kompetencji użytkownika (bez kont, w formularzu/sesji)
 - [ ] Ranking luk wg częstości w ofertach danego profilu
 - [ ] Endpointy API (`/profiles/{id}/skills`, `/gap`) z testami na małym, ręcznie policzonym zbiorze o znanym wyniku
-- [ ] Notatka `docs/thesis-notes/08-luka.md`
 
 ## Etap 9: Aplikacja webowa
 
@@ -137,7 +129,6 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Formularz kompetencji użytkownika
 - [ ] Widok luki
 - [ ] Cały scenariusz (wybór profilu → zaznaczenie umiejętności → ranking luk) działa w przeglądarce na danych z bazy
-- [ ] Notatka `docs/thesis-notes/09-web.md`
 
 ## Etap 10 (opcjonalnie): wynagrodzenia, wdrożenie, domknięcie
 
