@@ -15,7 +15,6 @@ services:
         condition: service_started
     volumes:
       - .:/app
-      - /app/.venv
 
   db:
     image: postgres:18
@@ -42,7 +41,7 @@ services:
       DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/jobskillgap
       REDIS_URL: redis://redis:6379/0
     depends_on: { db: {condition: service_healthy}, redis: {condition: service_started}}
-    volumes: [".:/app", "/app/.venv"]
+    volumes: [".:/app"]
 
   beat:
     build: .
