@@ -1,13 +1,21 @@
+from job_skill_gap.adapters.ashby import AshbyAdapter
+from job_skill_gap.adapters.lever import LeverAdapter
 from enum import StrEnum
 from pathlib import Path
 
 from job_skill_gap.adapters.greenhouse import GreenhouseAdapter
 
-ADAPTERS = {"greenhouse": GreenhouseAdapter}
+ADAPTERS = {
+    "greenhouse": GreenhouseAdapter,
+    "lever": LeverAdapter,
+    "ashby": AshbyAdapter,
+}
 
 
 class SourceName(StrEnum):
     greenhouse = "greenhouse"
+    level = "lever"
+    ashby = "ashby"
 
 
 def read_tokens(path: Path) -> list[str]:

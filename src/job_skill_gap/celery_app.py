@@ -17,6 +17,16 @@ celery_app.conf.update(
             "task": "job_skill_gap.tasks.import_source",
             "args": ["greenhouse"],
             "schedule": timedelta(minutes=settings.import_interval_minutes),
-        }
+        },
+        "import-lever": {
+            "task": "job_skill_gap.tasks.import_source",
+            "args": ["lever"],
+            "schedule": timedelta(minutes=settings.import_interval_minutes),
+        },
+        "import-ashby": {
+            "task": "job_skill_gap.tasks.import_source",
+            "args": ["ashby"],
+            "schedule": timedelta(minutes=settings.import_interval_minutes),
+        },
     },
 )
