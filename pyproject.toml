@@ -1,7 +1,7 @@
 [project]
 name = "job_skill_gap"
 version = "0.0.1"
-description = "Add your description here"
+description = "IT job market analysis platform for skill extraction, job classification, deduplication, and competency gap analysis."
 readme = "README.md"
 authors = [
     { name = "Maciej Kowalski", email = "maciej.ko1444@gmail.com" }
