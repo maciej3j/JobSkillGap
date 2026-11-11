@@ -42,7 +42,7 @@ uv run pytest
 | 0 | Fundament | [x] |
 | 1 | Greenhouse + surowe dane | [x] |
 | 2 | Celery + Redis + odporność | [x] |
-| 3 | Lever i Ashby | [x] |
+| 3 | Lever i Ashby | [ ] |
 | 4 | Zbiór referencyjny | [ ] |
 | 5 | Ekstrakcja i normalizacja kompetencji | [ ] |
 | 6 | Klasyfikacja profilu i poziomu | [ ] |
@@ -90,9 +90,9 @@ uv run pytest
 
 ## Etap 3: Lever i Ashby
 
-- [x] Aktualne publiczne endpointy i limity sprawdzone w dokumentacji obu systemów (zapisane w notatce)
-- [x] Adaptery Lever i Ashby implementują ten sam interfejs co Greenhouse
-- [x] Fixture'y i testy na fixture'ach dla każdego źródła
+- [x] Aktualne publiczne endpointy i limity sprawdzone w dokumentacji obu systemów
+- [ ] Adaptery Lever i Ashby implementują ten sam interfejs co Greenhouse
+- [ ] Fixture'y i testy na fixture'ach dla każdego źródła
 - [ ] Idempotencja przetestowana dla każdego źródła
 - [ ] W bazie ≥ 5000 ofert łącznie (lub wyraźnie widać, że dojdzie do tej liczby po dodaniu firm)
 
