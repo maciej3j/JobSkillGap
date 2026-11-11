@@ -1,13 +1,13 @@
-from job_skill_gap.config import get_settings
 import logging
 from pathlib import Path
 from typing import Annotated
 
 import typer
 
+from job_skill_gap.config import get_settings
 from job_skill_gap.db import SessionLocal
 from job_skill_gap.importer import run_import
-from job_skill_gap.sources import ADAPTERS, SourceName, read_tokens, company_file
+from job_skill_gap.sources import ADAPTERS, SourceName, company_file, read_tokens
 
 app = typer.Typer(name="JobSkillGap-cli", no_args_is_help=True)
 settings = get_settings()

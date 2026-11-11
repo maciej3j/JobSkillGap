@@ -1,9 +1,9 @@
-from job_skill_gap.adapters.ashby import AshbyAdapter
-from job_skill_gap.adapters.lever import LeverAdapter
 from enum import StrEnum
 from pathlib import Path
 
+from job_skill_gap.adapters.ashby import AshbyAdapter
 from job_skill_gap.adapters.greenhouse import GreenhouseAdapter
+from job_skill_gap.adapters.lever import LeverAdapter
 
 ADAPTERS = {
     "greenhouse": GreenhouseAdapter,
