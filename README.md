@@ -2,20 +2,31 @@
 
 System, który pobiera publiczne oferty pracy IT z Greenhouse, Lever i Ashby, wyciąga z nich kompetencje, klasyfikuje oferty według profilu i poziomu, usuwa duplikaty, a użytkownikowi pokazuje, jakich kompetencji brakuje mu do wybranego profilu.
 
-## Stos
+## Tech Stack
 
 Python 3.14, uv, FastAPI, SQLAlchemy 2.0 (sync), Alembic, PostgreSQL, Celery + Redis, Jinja2 + HTMX + Tailwind, spaCy, RapidFuzz, scikit-learn, pytest, ruff, Docker Compose.
 
-## Uruchomienie
+## Uruchomienie Aplikacji:
 
 ```bash
 docker compose up -d --build
+```
+
+### Sprawdzenie czy się uruchomiła
+```bash
 curl localhost:8000/health
+```
+
+### Pierwsza migracja bazy danych
+```bash
 docker compose exec web uv run alembic upgrade head
+```
+### Uruchomienie testów
+```bash
 docker compose exec web uv run pytest
 ```
 
-Lokalnie, bez Dockera:
+bez Dockera:
 
 ```bash
 uv sync
@@ -23,18 +34,15 @@ uv run ruff check .
 uv run pytest
 ```
 
-Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy muszą wskazywać osobną bazę, nigdy deweloperską).
-
-
 
 ## Postęp
 
 | Etap | Opis | Status |
 |---|---|---|
 | 0 | Fundament | [x] |
-| 1 | Greenhouse + surowe dane | [ ] |
-| 2 | Celery + Redis + odporność | [ ] |
-| 3 | Lever i Ashby | [ ] |
+| 1 | Greenhouse + surowe dane | [x] |
+| 2 | Celery + Redis + odporność | [x] |
+| 3 | Lever i Ashby | [x] |
 | 4 | Zbiór referencyjny | [ ] |
 | 5 | Ekstrakcja i normalizacja kompetencji | [ ] |
 | 6 | Klasyfikacja profilu i poziomu | [ ] |
@@ -44,6 +52,16 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 | 10 | Wynagrodzenia, wdrożenie, domknięcie | [ ] |
 
 ---
+
+## Etap 0: Fundament
+
+- [x] `docker compose up` uruchamia usługi `web`, `db`, `redis`
+- [x] `GET /health` zwraca 200 i sprawdza połączenie z bazą (`SELECT 1`)
+- [x] `uv run pytest` przechodzi lokalnie
+- [x] GitHub Actions uruchamia `ruff check` i `pytest` i jest zielony
+- [x] `alembic upgrade head` działa, w bazie jest tabela `alembic_version`
+- [x] Python przypięty do 3.14 (`.python-version`, `Dockerfile`)
+- [x] `.venv`, `.env` w `.gitignore`; `.venv` w `.dockerignore`
 
 ## Etap 1: Pierwszy adapter + surowe dane (Greenhouse)
 
@@ -62,19 +80,19 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 
 ## Etap 2: Celery + Redis + odporność
 
-- [ ] Usługi `worker` i `beat` w `docker-compose.yml`
-- [ ] Task importu per źródło/firma
-- [ ] Celery Beat uruchamia import cyklicznie (widoczne w logach i w `import_runs`)
-- [ ] Test: jeden adapter rzuca wyjątek, pozostałe się kończą
-- [ ] `import_runs.status` przyjmuje wartości `success` / `failed` / `partial`
-- [ ] Liczniki nowe/zmienione/niezmienione zapisywane przy każdym runie
-- [ ] Ponowne uruchomienie taska nie tworzy duplikatów
+- [x] Usługi `worker` i `beat` w `docker-compose.yml`
+- [x] Task importu per źródło/firma
+- [x] Celery Beat uruchamia import cyklicznie (widoczne w logach i w `import_runs`)
+- [x] Test: jeden adapter rzuca wyjątek, pozostałe się kończą
+- [x] `import_runs.status` przyjmuje wartości `success` / `failed` / `partial`
+- [x] Liczniki nowe/zmienione/niezmienione zapisywane przy każdym runie
+- [x] Ponowne uruchomienie taska nie tworzy duplikatów
 
 ## Etap 3: Lever i Ashby
 
-- [ ] Aktualne publiczne endpointy i limity sprawdzone w dokumentacji obu systemów (zapisane w notatce)
-- [ ] Adaptery Lever i Ashby implementują ten sam interfejs co Greenhouse
-- [ ] Fixture'y i testy na fixture'ach dla każdego źródła
+- [x] Aktualne publiczne endpointy i limity sprawdzone w dokumentacji obu systemów (zapisane w notatce)
+- [x] Adaptery Lever i Ashby implementują ten sam interfejs co Greenhouse
+- [x] Fixture'y i testy na fixture'ach dla każdego źródła
 - [ ] Idempotencja przetestowana dla każdego źródła
 - [ ] W bazie ≥ 5000 ofert łącznie (lub wyraźnie widać, że dojdzie do tej liczby po dodaniu firm)
 
@@ -147,14 +165,3 @@ Zmienne środowiskowe: `DATABASE_URL`, `REDIS_URL`, `TEST_DATABASE_URL` (testy m
 - [ ] Śledzenie pochodzenia każdego rekordu do surowego payloadu
 - [ ] Odporność na błąd pojedynczego źródła (test)
 - [ ] Automatyczne testy poszczególnych etapów przetwarzania w CI
-
-
-## Etap 0: Fundament
-
-- [x] `docker compose up` uruchamia usługi `web`, `db`, `redis`
-- [x] `GET /health` zwraca 200 i sprawdza połączenie z bazą (`SELECT 1`)
-- [x] `uv run pytest` przechodzi lokalnie
-- [x] GitHub Actions uruchamia `ruff check` i `pytest` i jest zielony
-- [x] `alembic upgrade head` działa, w bazie jest tabela `alembic_version`
-- [x] Python przypięty do 3.14 (`.python-version`, `Dockerfile`)
-- [x] `.venv`, `.env` w `.gitignore`; `.venv` w `.dockerignore`
