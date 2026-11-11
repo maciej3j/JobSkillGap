@@ -4,7 +4,7 @@ System, który pobiera publiczne oferty pracy IT z Greenhouse, Lever i Ashby, wy
 
 ## Tech Stack
 
-Python 3.14, uv, FastAPI, SQLAlchemy 2.0 (sync), Alembic, PostgreSQL, Celery + Redis, Jinja2 + HTMX + Tailwind, spaCy, RapidFuzz, scikit-learn, pytest, ruff, Docker Compose.
+Python 3.14, uv, FastAPI, SQLAlchemy 2.0 (sync), Alembic, PostgreSQL, Celery + Redis, Jinja2 + HTMX + Tailwind, pytest, ruff, Docker Compose.
 
 ## Uruchomienie Aplikacji:
 
