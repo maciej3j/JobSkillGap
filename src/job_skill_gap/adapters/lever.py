@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from job_skill_gap.adapters.base import UnifiedOffer
 
-BASE = "https://api.level.co/v0/postings"
+BASE = "https://api.lever.co/v0/postings"
 PAGE_SIZE = 100
 
 

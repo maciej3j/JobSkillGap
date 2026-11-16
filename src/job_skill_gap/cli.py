@@ -17,7 +17,7 @@ def _import_one(source: SourceName, file: Path | None, pause: float) -> None:
     path = file or company_file(source.value)
     if not path.exists():
         raise typer.BadParameter(f"No file with companies: {path}")
-    adapter = ADAPTERS[source.value]
+    adapter = ADAPTERS[source.value]()
     with SessionLocal() as db:
         run = run_import(db, adapter, read_tokens(path), pause=pause)
     typer.echo(
