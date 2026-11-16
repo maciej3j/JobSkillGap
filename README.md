@@ -91,10 +91,10 @@ uv run pytest
 ## Etap 3: Lever i Ashby
 
 - [x] Aktualne publiczne endpointy i limity sprawdzone w dokumentacji obu systemów
-- [ ] Adaptery Lever i Ashby implementują ten sam interfejs co Greenhouse
-- [ ] Fixture'y i testy na fixture'ach dla każdego źródła
-- [ ] Idempotencja przetestowana dla każdego źródła
-- [ ] W bazie ≥ 5000 ofert łącznie (lub wyraźnie widać, że dojdzie do tej liczby po dodaniu firm)
+- [x] Adaptery Lever i Ashby implementują ten sam interfejs co Greenhouse
+- [x] Fixture'y i testy na fixture'ach dla każdego źródła
+- [x] Idempotencja przetestowana dla każdego źródła
+- [x] W bazie ≥ 5000 ofert łącznie (lub wyraźnie widać, że dojdzie do tej liczby po dodaniu firm)
 
 ## Etap 4: Zbiór referencyjny
 
